@@ -1,10 +1,12 @@
-def email():
-    import os
-    from sendgrid import SendGridAPIClient
-    from sendgrid.helpers.mail import Mail, Email
-    from python_http_client.exceptions import HTTPError
+import sendgrid
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail, Email
+from python_http_client.exceptions import HTTPError
+from info import info 
 
-    sg = SendGridAPIClient(os.environ['EMAIL_API_KEY'])
+def email():
+    sg = SendGridAPIClient(info.EMAIL_API_KEY)
 
     html_content = "<p>Hello World!</p>"
 
