@@ -1,4 +1,4 @@
-def email(request):
+def email():
     import os
     from sendgrid import SendGridAPIClient
     from sendgrid.helpers.mail import Mail, Email
@@ -9,12 +9,12 @@ def email(request):
     html_content = "<p>Hello World!</p>"
 
     message = Mail(
-        to_emails="[Destination]@email.com",
-        from_email=Email('[YOUR]@gmail.com', "Your name"),
+        to_emails="antti.lecklin1@gmail.com",
+        from_email=Email('antti.lecklin@gmail.com', "Proggis_3"),
         subject="Hello world",
         html_content=html_content
         )
-    message.add_bcc("[YOUR]@gmail.com")
+    message.add_bcc("antti.lecklin@gmail.com")
 
     try:
         response = sg.send(message)
@@ -23,3 +23,5 @@ def email(request):
 
     except HTTPError as e:
         return e.message
+
+email()
