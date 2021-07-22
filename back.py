@@ -1,7 +1,8 @@
 import sendgrid
 import os
+import base64
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Email
+from sendgrid.helpers.mail import Mail, Email, Attachment, FileContent, FileName, FileType, Disposition
 from python_http_client.exceptions import HTTPError
 from info import info 
 
@@ -17,6 +18,19 @@ def email():
         html_content=html_content
         )
     message.add_bcc("antti.lecklin@gmail.com")
+    
+    with open('test.txt', 'rb') as f:
+        data = f.read()
+        f.close()
+    encoded_file = base64.b64encode(data).decode()
+
+    attachedFile = Attachment(
+    FileContent(encoded_file),
+    FileName('test.txt'),
+    FileType('text.txt'),
+    Disposition('attachment')
+    )
+    message.attachment = attachedFile
 
     try:
         response = sg.send(message)
