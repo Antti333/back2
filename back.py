@@ -9,28 +9,41 @@ from info import info
 def email():
     sg = SendGridAPIClient(info.EMAIL_API_KEY)
 
-    html_content = "<p>Hello World!</p>"
+    html_content = "<p>Daily hour report</p>"
 
     message = Mail(
         to_emails="antti.lecklin1@gmail.com",
         from_email=Email('antti.lecklin@gmail.com', "Proggis_3"),
-        subject="Hello world",
+        subject="Report on working hours",
         html_content=html_content
         )
     message.add_bcc("antti.lecklin@gmail.com")
     
-    with open('test.txt', 'rb') as f:
+    with open('dailyhour.txt', 'rb') as f:
         data = f.read()
         f.close()
     encoded_file = base64.b64encode(data).decode()
 
     attachedFile = Attachment(
     FileContent(encoded_file),
-    FileName('test.txt'),
+    FileName('dailyhour.txt'),
     FileType('text.txt'),
     Disposition('attachment')
     )
     message.attachment = attachedFile
+
+    with open('dailyactivities.txt', 'rb') as f:
+        data = f.read()
+        f.close()
+    encoded_file = base64.b64encode(data).decode()
+
+    attachedFile2 = Attachment(
+    FileContent(encoded_file),
+    FileName('dailyactivities.txt'),
+    FileType('text.txt'),
+    Disposition('attachment')
+    )
+    message.attachment = attachedFile2
 
     try:
         response = sg.send(message)
